@@ -177,6 +177,41 @@ namespace LiveChatSystem.DataLayer
             }
             return dtMessage;
         }
+
+        public DataTable GetUserDetailsFromUserID(string UserId, string ClientId)
+        {
+
+            DataTable dtMessage = new DataTable();
+            SqlConnection con = new SqlConnection(strConnString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "GetUserDetailsFromUserID";
+            cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = UserId;
+            cmd.Parameters.Add("@ClientId", SqlDbType.VarChar).Value = ClientId;
+
+            cmd.Connection = con;
+            try
+            {
+                con.Open();
+
+                reader = cmd.ExecuteReader();
+
+                dtMessage.Load(reader);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
+            return dtMessage;
+        }
+
         public string SendMail(string recipientName,string loanNumber,string message, string UserEmail, string LoanNo)
         {
             var AccountName = ConfigurationManager.AppSettings["EmailAccountName"].ToString();

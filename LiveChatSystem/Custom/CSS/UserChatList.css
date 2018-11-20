@@ -197,7 +197,7 @@ img {
     color: white;
 }
 
-#btnSendMessage {
+#btnSendMessage, #btnSendVcard {
     margin-left: 2px;
     border: none;
     background: white;

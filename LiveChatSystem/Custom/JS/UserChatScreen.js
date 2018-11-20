@@ -62,3 +62,35 @@ var sendMessage = function (current, clientId, recepientName, recepientPhoneNumb
     }
     
 }
+
+
+var sendVcard = function (current, clientId, recepientName, recepientPhoneNumber, loanNumber, userPhoneNumber, userid, RecepientRole, loanNo) {
+    var obj = {};
+
+    obj.recepientPhoneNumber = recepientPhoneNumber;
+    obj.userPhoneNumber = userPhoneNumber;// $(".clsuserPhoneNumber").val();
+    obj.userid = userid;
+    obj.clientId = clientId;
+
+    var vcardurl = '/User/sendvcard';
+
+
+    $.ajax({
+        type: "POST",
+        url: vcardurl,
+        data: JSON.stringify(obj),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+
+    function successFunc(data, status) {
+        alert("vcard sent");
+
+    }
+
+    function errorFunc(err) {
+        alert(err.responseText);
+    }
+}

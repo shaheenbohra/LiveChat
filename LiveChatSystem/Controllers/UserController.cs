@@ -106,6 +106,68 @@ namespace LiveChatSystem.Controllers
             return PartialView("_chatView", ViewBag.lstConversations);
 
         }
+
+        public int sendvcard(string recepientPhoneNumber, string userPhoneNumber, string userid, string clientId)
+        {
+            var objUser = new UserChat();
+            DataTable userdetails = objUser.GetUserDetailsFromUserID(userid, clientId);
+            string firstName = userdetails.Rows[0]["FirstName"].ToString();
+            string LastName = userdetails.Rows[0]["LastName"].ToString();
+            string PhoneNumber = userdetails.Rows[0]["PhoneNumber"].ToString();
+            string Email = userdetails.Rows[0]["Email"].ToString();
+
+
+
+
+            var vCard = new System.Text.StringBuilder();
+            vCard.Append("BEGIN:VCARD");
+            vCard.AppendLine();
+            vCard.Append("VERSION:2.1");
+            vCard.AppendLine();
+
+            // Name
+            vCard.Append($"N:  {LastName};{firstName};");
+            vCard.AppendLine();
+
+            vCard.Append($"FN:{firstName} {LastName}");
+            vCard.AppendLine();
+            vCard.Append("TEL");
+            vCard.Append(";");
+            vCard.Append("CELL");
+            vCard.Append(";");
+            vCard.Append("VOICE:");
+            vCard.Append(PhoneNumber);
+            vCard.AppendLine();
+
+            // Email
+            vCard.Append("EMAIL");
+            vCard.Append(";");
+            vCard.Append("PREF");
+            vCard.Append(";");
+            vCard.Append("INTERNET:");
+            vCard.Append(Email);
+            vCard.AppendLine();
+            vCard.Append("END:VCARD");
+
+            string result = vCard.ToString();
+            string fname = "/" + PhoneNumber + ".vcf";
+
+            string filename = Server.MapPath(fname);
+            FileInfo info = new FileInfo(filename);
+            using (StreamWriter writer = info.CreateText())
+            {
+                writer.WriteLine(result);
+
+            }
+
+            var objChatWithTwilio = new ChatWithTwilio();
+
+            objChatWithTwilio.SendMMS(filename, userPhoneNumber, recepientPhoneNumber);
+
+            return 1;
+
+        }
+
         //Action called when message is send on User chat screen
         public JsonResult SendMessageByUser(bool isSentByUser,string message, string clientId, string recepientName, string recepientPhoneNumber, string loanNumber, string userPhoneNumber, int RecepientRole, string userid, string shortUrl="", bool sentFromMobile = true, string connectionid= "", string Email="", string loanNo="")
         {
@@ -122,10 +184,10 @@ namespace LiveChatSystem.Controllers
             var objChat = new ChatWithTwilio();
             string userStatus = objUserChat.GetUserStatus(userPhoneNumber);
             recipientId = recepientName.Trim() + recepientPhoneNumber.Trim();
-            if (userStatus == "False" && isSentByUser == false)
-            {
-                objUserChat.SendMail(recepientName, loanNumber, message,Email, loanNo);
-            }
+           // if (userStatus == "False" && isSentByUser == false)
+            //{
+              //  objUserChat.SendMail(recepientName, loanNumber, message,Email, loanNo);
+            //}
             if ((isSentByUser == false) && (sentFromMobile == true))
             {
                 DataTable dtNoOfMstgs = objChat.GetTotalNoOfMsg(recepientPhoneNumber, userPhoneNumber, loanNumber);
@@ -152,9 +214,9 @@ namespace LiveChatSystem.Controllers
                 objChatWithTwilio.SaveMessage(recepientName,userid,isSentByUser, message, clientId, recepientPhoneNumber, sentFromMobile, loanNumber, userPhoneNumber, RecepientRole,shortUrl, loanNo, connectionid);
                 if(isSentByUser==false)
                 {
-                    ChatHub.SendMessages(userid,clientId,recepientPhoneNumber, recipientId);
+                    ChatHub.SendMessages(userid, clientId, recepientPhoneNumber, recipientId, loanNo, recepientName, loanNumber, message, Email, Convert.ToString(TempData.Peek("LoanGUID")));
                 }
-                
+
             }
             Result.Add(recipientId);
             Result.Add(isReceived);
@@ -171,6 +233,7 @@ namespace LiveChatSystem.Controllers
             //LoanGUID = "{d0150da9-5852-4f5f-9f2c-6fa35119bcff}";
             Session["UserName"] = ClientID;
             Session["UserId"] = UserID;
+            TempData["LoanGUID"] = LoanGUID;
             var objUserConversationList = new UserChat();
             DataTable dtUserChat = objUserConversationList.GetUserChatList(ClientID, UserID, LoanGUID);
             var myEnumerable = dtUserChat.AsEnumerable();

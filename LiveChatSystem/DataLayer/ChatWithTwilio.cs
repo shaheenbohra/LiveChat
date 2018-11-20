@@ -141,6 +141,41 @@ namespace LiveChatSystem.DataLayer
 
             return returnMsg;
         }
+
+        public String SendMMS(string mediaUrl, string from = "+17342940754", string To = "+971545473919")
+        {
+            string returnMsg = string.Empty;
+
+
+            string accountSid = ConfigurationManager.AppSettings["TwilioAccountSid"].ToString(); // "AC76e03011135c771e3e4c466c88679825";
+            // Your Auth Token from twilio.com/console
+            var authToken = ConfigurationManager.AppSettings["TwilioAuthToken"].ToString(); // "3e3b3f867b4d629514e23e15d62bb12c";
+
+            TwilioClient.Init(accountSid, authToken);
+            try
+            {
+                var message = MessageResource.Create(
+
+                    to: new PhoneNumber(To),
+                    from: new PhoneNumber(from),
+                    //to: new PhoneNumber(To),
+                    //from: new PhoneNumber(from),
+                    body: "Attached herewith are the Contact details",
+                    mediaUrl: Twilio.Converters.Promoter.ListOfOne(new Uri(mediaUrl)));
+                //  var msg= message.Status
+                returnMsg = "1";
+            }
+            catch (Exception ex)
+            {
+
+                returnMsg = ex.Message.ToString();
+            }
+
+
+
+            return returnMsg;
+        }
+
         public void SaveMessage(string RecipientName, string UserId, bool IsSentByUser, string message, string clientId , string recepientPhoneNumber, bool sentFromMobile, string loanNumber, string userPhoneNumber, int RecepientRole, string shortUrl, string LoanNo, string connectionid="")
         {
             //if (string.IsNullOrEmpty(shortUrl))
