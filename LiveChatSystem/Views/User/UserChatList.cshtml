@@ -1,0 +1,94 @@
+﻿@model IEnumerable<LiveChatSystem.Models.ChatList>
+@{
+    ViewBag.Title = "UserChatList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row chat-window col-xs-10 col-md-4" id="chat_window_1" style="margin-left:0px;">
+    @* margin-left:10px; *@
+
+    <div class="panel panel-primary" style="height:100%;min-height:100%; padding: 0 0 20px 0 ;">
+        <div class="panel-heading top-bar">
+            <div class="col-md-9 col-xs-9">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;&nbsp;Conversations&nbsp;&nbsp;&nbsp;<span id="counter" class="badge badge-danger"></span></h3>
+
+            </div>
+            <div class="col-md-3 col-xs-3" style="text-align: right;">
+                <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim" style="color:white;"></span></a>
+                @* <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1" style="color:white;"></span></a>*@
+            </div>
+
+        </div>
+
+        <div class="panel-body msg_container_base">
+
+            <ul class="media-list" style="max-width:350px;">
+                @foreach (var d in Model)
+                {
+
+                    <li class="media">
+                        <input type="hidden" class="clsLoanNumber" value="@d.LoanUpdateID" />
+                        <input type="hidden" class="clsClientId" value="@d.ClientId" />
+                        <input type="hidden" class="clsDateTimeReceived" value="@d.DateTimeReceived" />
+                        <input type="hidden" class="clsRecipientName" value="@d.RecipientName" />
+                        <input type="hidden" class="clsRecipientPhoneNumber" value="@d.RecipientPhoneNumber" />
+                        <input type="hidden" class="clsMessage" value="@d.Message" />
+                        <input type="hidden" class="clsMaskedPhoneNumber" value="@d.PhoneNumber" />
+                        <input type="hidden" class="clsUserId" value="@d.UserId" />
+                        <input type="hidden" class="clsRecipientRole" value="@d.RecipientRole" />
+                        <input type="hidden" class="clsRecipientId" value="@d.RecipientId" />
+                        <input type="hidden" class="clsLoanNo" value="@d.LoanNo" />
+
+                        @{string rname = @d.RecipientName.Replace(" ", "_");}
+                        <div class="media-body clsliMedia @rname">
+
+                            <div class="media" style="margin-top:1;">
+                                <a class="pull-left" style="margin-top:10px; text-decoration: none;" href="#">
+                                    @*<div class="my-circle" title="KM"></div>*@
+                                    <p class="p_circle" style="background-color:@d.ColorCode;border-radius:50%;color:white;height:30px;width:30px;margin: 0 0 0 0 ;line-height: 30px;text-align: center;">@d.RecepientInitials</p>
+                                </a>
+                                <div class="media-body">
+
+                                    <h5>@d.RecipientName </h5>
+
+                                    <small id="sneak_msg" class="text-muted clsShortmsg @rname">@d.Message</small>
+
+                                    @*<small class="text-muted">@d.DateTimeReceived</small>*@
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <input type="hidden" class="clsIsOpen" id="hdnIsopen" value="0" />
+                        <div class="clsloadChatScreen" id=" #loadChatScreen">
+
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+@*<div class="col-md-6 clsloadChatScreen" id=" #loadChatScreen">
+
+    </div>*@
+@section Scripts
+{
+
+
+    <script src="@Url.Content("~/Custom/JS/RecepientChat.js")"></script>
+    <script src="@Url.Content("~/Custom/JS/UserChatScreen.js")"></script>
+    <script src="@Url.Content("~/Custom/JS/UserChatList.js")"></script>
+   
+
+  
+}
+@Styles.Render("~/Custom/CSS/UserChatList.css")
+
+
+
+
+

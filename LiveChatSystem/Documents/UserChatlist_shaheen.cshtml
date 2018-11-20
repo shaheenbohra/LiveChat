@@ -1,0 +1,195 @@
+@model IEnumerable<LiveChatSystem.Models.ChatList>
+@{
+    ViewBag.Title = "UserChatList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-6">CONVERSATIONS</div>
+                <div style="text-align:right" class="col-md-5"><i class="fa fa-plus"></i></div>
+                <div style="text-align:left" class="col-md-1"><i class="fa fa-minus"></i></div>
+            </div>
+        </div>
+        <div class="panel-body">
+
+            <ul class="media-list">
+                @foreach (var d in Model)
+                {
+
+                    <li class="media">
+
+                        <div class="media-body clsliMedia">
+                            <input type="hidden" class="clsLoanNumber" value="@d.LoanUpdateID" />
+                            <input type="hidden" class="clsClientId" value="@d.ClientId" />
+                            <input type="hidden" class="clsDateTimeReceived" value="@d.DateTimeReceived" />
+                            <input type="hidden" class="clsRecipientName" value="@d.RecipientName" />
+                            <input type="hidden" class="clsRecipientPhoneNumber" value="@d.RecipientPhoneNumber" />
+                            <input type="hidden" class="clsMessage" value="@d.Message" />
+                            <input type="hidden" class="clsMaskedPhoneNumber" value="@d.MaskedPhoneNumber" />
+                           
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    @*<div class="my-circle" title="KM"></div>*@
+                                    <p data-letters="@d.RecepientInitials"></p>
+                                </a>
+                                <div class="media-body">
+
+                                    <h5>@d.RecipientName| User </h5>
+
+                                    <small class="text-muted">@d.Message</small>
+                                    
+                                    <small class="text-muted">@d.DateTimeReceived</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                }
+                @*<li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.png" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Alex Deo | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.gif" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Jhon Rexa | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.png" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Alex Deo | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.gif" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Jhon Rexa | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.png" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Alex Deo | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.gif" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Jhon Rexa | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.png" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Alex Deo | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="media">
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle" style="max-height:40px;" src="~/images/user.gif" />
+                                </a>
+                                <div class="media-body">
+                                    <h5>Jhon Rexa | User </h5>
+
+                                    <small class="text-muted">Active From 3 hours</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>*@
+            </ul>
+        </div>
+    </div>
+
+</div>
+@section Scripts
+{
+    <script src="@Url.Content("~/Custom/JS/UserChatList.js")"></script>
+}

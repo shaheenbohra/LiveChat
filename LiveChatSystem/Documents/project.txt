@@ -1,0 +1,16 @@
+Server=tcp:mmchatserver.database.windows.net,1433;Initial Catalog=MMChat;Persist Security Info=False;User ID =dbadmin;Password=Temp@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/shaheenshruti/Project.git
+git push -u origin master
+
+%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Lenovo\Bluetooth Software\;C:\Program Files\Lenovo\Bluetooth Software\syswow64;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmdgit init
+
+search-ms:displayname=Search%20Results%20in%20Git&crumb=location:C%3A%5CProgram%20Files%5CGit\git-core
+
+git email for commit:43819905+shaheenbohra@users.noreply.github.com
+
+
+http://localhost:49342/User/UserChatList?ClientId="3011138444"&UserId="ccl1229017"&LoanGUID="{d0150da9-5852-4f5f-9f2c-6fa35119bcff}"

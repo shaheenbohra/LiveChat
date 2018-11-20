@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Helloworld";
+}
+
+<h2>Helloworld</h2>
+<div id="mbcContainer" style="width:1000px;height:700px;border:1px solid #eee"></div>
+
+@section Scripts
+{
+    <script src="~/MbcResources/dynamsoft.mbc.min.js"></script>
+    <script>
+        /* ========== init ========== */
+        var mbcView = new dynamsoft.mbc.View({
+            strHtmlElementId: 'mbcContainer',
+            strAssetsPath: 'MbcResources',
+            thumbnailViewer: {
+                bFloat: false
+            },
+        });
+        /* ========== show the built-in toolbar ========== */
+        mbcView.toolbar.show();
+
+        $('.btn-upload').click(function () {
+            console.log("upload button");
+
+        });
+    </script>
+}
+
+@Styles.Render("~/MbcResources/dynamsoft.mbc.css")
+

@@ -1,0 +1,164 @@
+﻿@model IEnumerable<LiveChatSystem.Models.ChatHistory>
+@{
+    ViewBag.Title = "UserChatScreen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel-heading" style="float:right">
+    <span class="input-group-btn col-md-12">
+        <button id="btnBack" class="btn btn-info" type="button">Back</button>
+    </span>
+</div>
+
+<div class="col-md-12">
+
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Conversations
+        </div>
+        <div class="panel-body">
+            <input type="hidden" class="clsLoanNumber" value="@ViewBag.loanNumber" />
+            <input type="hidden" class="clsClientId" value="@ViewBag.clientId" />
+            <input type="hidden" class="clsRecipientName" value="@ViewBag.recepientName" />
+            <input type="hidden" class="clsRecipientPhoneNumber" value="@ViewBag.recepientPhoneNumber" />
+            <input type="hidden" class="clsRecepientRole" value="@ViewBag.RecepientRole" />
+            <input type="hidden" class="clsuserPhoneNumber" value="@ViewBag.userPhoneNumber" />
+            
+            <ul class="media-list">
+                @foreach (var d in Model)
+                {
+                    <li class="media">
+
+
+                        <div class="media-body">
+
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object img-circle " src="~/images/user.gif" />
+                                </a>
+                                <div class="media-body">
+                                    @d.Message
+                                    <br />
+                                    <small class="text-muted">@d.RecipientName | @d.Timestamp</small>
+                                    <hr />
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                }
+                @*<li class="media">
+
+
+                <div class="media-body">
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img class="media-object img-circle " src="~/images/user.gif" />
+                        </a>
+                        <div class="media-body">
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+
+                            Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim.
+                            Duis vel condimentum massa.
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+                            <br />
+                            <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
+                            <hr />
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+            <li class="media">
+
+                <div class="media-body">
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img class="media-object img-circle " src="~/images/user.png" />
+                        </a>
+                        <div class="media-body">
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+
+                            Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim.
+                            Duis vel condimentum massa.
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+                            <br />
+                            <small class="text-muted">Jhon Rexa | 23rd June at 5:00pm</small>
+                            <hr />
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+            <li class="media">
+
+                <div class="media-body">
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img class="media-object img-circle " src="~/images/user.png" />
+                        </a>
+                        <div class="media-body">
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+
+                            Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim.
+                            Duis vel condimentum massa.
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+                            <br />
+                            <small class="text-muted">Alex Deo | 23rd June at 5:00pm</small>
+                            <hr />
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+            <li class="media">
+
+                <div class="media-body">
+
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img class="media-object img-circle " src="~/images/user.gif" />
+                        </a>
+                        <div class="media-body">
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+
+                            Donec sit amet ligula enim. Duis vel condimentum massa.Donec sit amet ligula enim.
+                            Duis vel condimentum massa.
+                            Donec sit amet ligula enim. Duis vel condimentum massa.
+                            <br />
+                            <small class="text-muted">Jhon Rexa | 23rd June at 5:00pm</small>
+                            <hr />
+                        </div>
+                    </div>
+
+                </div>
+            </li>*@
+            </ul>
+        </div>
+        <div class="panel-footer">
+            <div class="col-md-12 input-group">
+                @*<select style="width:100%" class="form-control">
+                    <option value="0">Select</option>
+                </select>*@
+                @Html.DropDownList("ddlMsgTemplates", (SelectList)ViewBag.MessagesTemplates, new { @class = "form-control" })
+                
+            </div>
+            <div class="col-md-12 input-group" style="padding-top:1%">
+
+                <input id="txtMessage" type="text" class="form-control" placeholder="Enter Message" />
+                <span class="input-group-btn">
+                    <button id="btnSendMessage" class="btn btn-info" type="button" onclick="sendMessage()">SEND</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="@Url.Content("~/Custom/JS/UserChatScreen.js")"></script>
+}

@@ -1,0 +1,81 @@
+﻿<div>
+<div id="imgShowMdl" class="imgShowMdl">
+</div>
+<div id="imgEditMdl" class="imgEditMdl" style="display:none;text-align:center;align-self:center;">
+    <button onclick="painter.undo()" class="btn btn-sm btn-info edit_btn">
+        undo
+    </button>
+    <button onclick="painter.redo()" class="btn btn-sm btn-info edit_btn">
+        redo
+    </button>
+    <button onclick="painter.rotateLeft()" class="btn btn-sm btn-info edit_btn">
+        rotateLeft
+    </button>
+    <button onclick="painter.rotateRight()" class="btn btn-sm btn-info edit_btn">
+        rotateRight
+    </button>
+    <button onclick="painter.mirror()" class="btn btn-sm btn-info edit_btn">
+        mirror
+    </button>
+    <button onclick="painter.cropAsync()" class="btn btn-sm btn-info edit_btn">
+        crop
+    </button>
+    <button id="btn-loadcv" onclick="$('#grayFog').show();KPainter.loadCvScriptAsync(function(isSuccess){if(isSuccess){$('#btn-loadcv').hide();$('#btn-detectDoc').show();$('#btn-enterTsf').show();}$('#grayFog').hide();});" class="btn btn-sm btn-info edit_btn">
+        loadcv
+    </button>
+    <button id="btn-detectDoc" onclick="painter.enterFreeTransformModeAsync(function(isSuccess){if(isSuccess){painter.documentDetectAsync(function(isSuccess){if(isSuccess){$('#imgEditMdl').hide();$('#docDetectMdl').show();}});}});" style="display:none" class="btn btn-sm btn-info  edit_btn">
+        detectDoc
+    </button>
+    <button id="btn-enterTsf" onclick="painter.enterFreeTransformModeAsync(function(isSuccess){if(isSuccess){$('#imgEditMdl').hide();$('#docDetectMdl').show();}});" style="display:none" class="edit_btn">
+        freeTransform
+    </button>
+    <br>
+    <button onclick="painter.saveEditAsync(function(){$('#imgEditMdl').hide();$('#switchImgMdl').show();$('#addUplMdl').show();});" class="edit_btn btn-success">
+        Save
+    </button>
+    <button onclick="painter.cancelEdit();$('#imgEditMdl').hide();$('#switchImgMdl').show();$('#addUplMdl').show();" class="edit_btn btn-success">Cancel</button>
+</div>
+<div id="docDetectMdl" class="docDetectMdl" style="display:none ;align-self:center;text-align:center;" >
+    <button onclick="painter.undo()" class="btn btn-sm btn-info edit_btn">
+        undo
+    </button>
+    <button onclick="painter.redo()" class="btn btn-sm btn-info edit_btn">
+        redo
+    </button>
+    <button onclick="painter.setFreeTransformCornerPos([[0.5,-0.5],[0.5,0.5],[-0.5,0.5],[-0.5,-0.5]]);" class="btn btn-sm btn-info edit_btn">
+        selectAll
+    </button>
+    <button onclick="painter.documentDetectAsync();" class="btn btn-sm btn-info edit_btn">
+        detectDoc
+    </button>
+    <button onclick="painter.freeTransformAsync();" class="btn btn-sm btn-info edit_btn">
+        transform
+    </button>
+    <br>
+    <button onclick="painter.exitFreeTransformModeAsync(function(isSuccess){if(isSuccess){$('#docDetectMdl').hide();$('#imgEditMdl').show();}});" class="edit_btn">
+        exit
+    </button>
+    <button onclick="painter.freeTransformAsync(function(isSuccess){if(isSuccess){painter.exitFreeTransformModeAsync(function(isSuccess){if(isSuccess){$('#docDetectMdl').hide();$('#imgEditMdl').show();}});}});" class="edit_btn">&nbsp;ok&nbsp;</button>
+</div>
+<div style="align-self:center; text-align:center;">
+    
+    <button onclick="painter.del();" class="btn btn-sm btn-info edit_btn">
+        Delete
+    </button>
+    <button onclick="painter.enterEditAsync(function(isSuccess){if(isSuccess){$('#switchImgMdl').hide();$('#addUplMdl').hide();$('#imgEditMdl').show();}});" class="btn btn-sm btn-info edit_btn">
+        Edit
+    </button>
+    <br>
+    @*<input id="ipt-downloadName" placeholder="filename to download" class="edit_btn">*@
+</div>
+<div id="addUplMdl" style="text-align:center; padding-bottom:1%" >
+<button class=" btn bg-primary btn-download" onclick="painter.download($('#ipt-downloadName').val());">Download</button>
+    <button  class="btn bg-primary btnsave" >Add to List</button>
+</div>
+<div id="grayFog" class="grayFog" >
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+</div>

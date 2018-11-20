@@ -1,0 +1,2075 @@
+CREATE PROCEDURE GetAllConversationForUser --  GetAllConversationForUser '3011138444','ccl1229017','{9068afcb-5c1b-4d2f-adb5-554455b39ee7}'
+
+@ClientId nvarchar(50),
+
+@UserId nvarchar(50) ,
+
+@LoanGUID nvarchar(500)
+
+AS
+
+BEGIN
+
+SELECT LoanUpdateID,CH.ClientId,CH.RecipientName as RecipientName,isnull('00',CH.RecipientPhoneNumber) as RecipientPhoneNumber,DateTimeReceived,CH.Message,dbo.GetInitials(CH.RecipientName) As RecepientInitials, CU.MaskedPhoneNumber from(
+
+SELECT * FROM EncompassLoanUpdates WHERE ClientId = @ClientId 
+
+										AND Ltrim(Rtrim(Originator1ID)) = @UserId
+
+										AND Ltrim(Rtrim(loanguid)) = Ltrim(Rtrim(@LoanGUID))
+
+)TAB1
+
+Left JOIN ChatHistory CH ON TAB1.LoanUpdateID = CH.LoanNumber
+
+JOIN ChatUsers CU ON TAB1.Originator1ID = CU.UserId and TAB1.ClientID= CU.ClientId
+
+Where CH.RecipientPhoneNumber is not null
+
+ORDER BY TAB1.DateTimeReceived Desc
+
+END
+
+
+
+
+CREATE PROCEDURE GetAllMessageTemplates --  GetAllMessageTemplates
+
+AS
+
+BEGIN
+
+SELECT Mid as ID,MessageTemplate FROM Templates
+
+END
+
+
+
+
+
+
+
+
+CREATE PROCEDURE GetAllUserConversationList --GetAllUserConversationList '3011138444','ccl1229017', '{d0150da9-5852-4f5f-9f2c-6fa35119bcff}'
+
+
+
+@ClientId nvarchar(50),
+
+
+
+@UserId nvarchar(50) ,
+
+
+
+@LoanGUID nvarchar(500)
+
+
+
+AS
+
+
+
+SELECT *
+
+
+
+INTO #Temp
+
+
+
+FROM (
+
+
+
+SELECT TOP 1 ClientId,LoanUpdateID,Originator1ID,LoanNumber, LoanProcessor1ID,Realtor1Name,Realtor2Name,Borrower1FirstName,Borrower2FirstName,Borrower3FirstName,Borrower4FirstName,Borrower5FirstName,Borrower6FirstName,Borrower7FirstName,Borrower8FirstName
+
+
+
+
+
+
+,LoanProcessor1FirstName,
+
+
+
+LoanProcessor1CellPhone,Realtor1CellPhone,Realtor2CellPhone,Borrower1CellPhone,Borrower2CellPhone,Borrower3CellPhone,Borrower4CellPhone,Borrower5CellPhone,Borrower6CellPhone,Borrower7CellPhone,Borrower8CellPhone 
+
+
+
+FROM dbo.EncompassLoanUpdates 
+
+
+
+Where LoanGUID = @LoanGUID
+
+
+
+	  and ClientId= @ClientId
+
+
+
+ORDER BY DateTimeReceived Desc) tab1
+
+
+
+SELECT *
+
+
+
+INTO #TempFirst
+
+
+
+FROM (
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'LoanProcessor1' as RecipientType,
+
+
+
+   LoanProcessor1FirstName as RecipientName,
+
+
+
+   LoanProcessor1CellPhone as  RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Realtor1' as RecipientType,
+
+
+
+   Realtor1Name as RecipientName,
+
+
+
+   Realtor1CellPhone as  RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+Originator1ID as Originator1ID,
+
+
+
+  ClientId as ClientId,
+
+
+
+  LoanUpdateID as LoanUpdateID,
+
+
+
+  'Realtor2' as RecipientType,
+
+
+
+   Realtor2Name as RecipientName,
+
+
+
+  Realtor2CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower1' as RecipientType,
+
+
+
+   Borrower1FirstName  as RecipientName,
+
+
+
+  Borrower1CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower2' as RecipientType,
+
+
+
+   Borrower2FirstName as RecipientName,
+
+
+
+  Borrower2CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower3' as RecipientType,
+
+
+
+   Borrower3FirstName as RecipientName,
+
+
+
+  Borrower3CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower4' as RecipientType,
+
+
+
+   Borrower4FirstName as RecipientName,
+
+
+
+  Borrower4CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower5' as RecipientType,
+
+
+
+   Borrower5FirstName as RecipientName,
+
+
+
+  Borrower5CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower6' as RecipientType,
+
+
+
+   Borrower6FirstName as RecipientName,
+
+
+
+  Borrower6CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select 
+
+
+
+   Originator1ID as Originator1ID,
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower7' as RecipientType,
+
+
+
+   Borrower7FirstName as RecipientName,
+
+
+
+  Borrower7CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp
+
+
+
+union all
+
+
+
+select
+
+
+
+   Originator1ID as Originator1ID, 
+
+
+
+   ClientId as ClientId,
+
+
+
+   LoanUpdateID as LoanUpdateID,
+
+
+
+  'Borrower8' as RecipientType,
+
+
+
+   Borrower8FirstName as RecipientName,
+
+
+
+  Borrower8CellPhone as RecipientPhoneNumber
+
+
+
+from #Temp)A1
+
+
+
+select * into #Temp1 from(
+
+
+
+select *,dbo.GetRole(RecipientType) as  RecepientInitials from #TempFirst
+
+
+
+where RecipientName is not null and RecipientName <> '' and RecipientPhoneNumber <> '' and RecipientPhoneNumber is not null
+
+
+
+)AF;
+
+
+
+SELECT *
+
+
+
+INTO #Temp2
+
+
+
+FROM (
+
+
+
+SELECT TOP 1 LoanNumber, RecipientName, RecipientPhoneNumber,RecipientRole,Message,Timestamp 
+
+
+
+FROM dbo.ChatHistory
+
+
+
+ORDER BY TimeStamp Desc 
+
+
+
+)A2
+
+
+
+
+
+
+
+--select * from #temp1 left join #temp2  on #Temp1.LoanUpdateID = #Temp2.LoanNumber
+
+
+
+
+
+
+
+select * into #TempResult from(
+
+
+
+select
+
+
+
+ --R.RecipientType as RecepientInitials,
+
+
+
+ dbo.CheckRole (#Temp1.RecipientType,R.RecipientDesc) as ResultRole, 
+
+
+
+ 
+
+
+
+ #Temp1.*, SUBSTRING(#Temp2.Message, 1, 10) as Messagetext, isnull(#Temp2.Timestamp,getdate()) as DateTimeReceived, CU.PhoneNumber from #Temp1
+
+
+
+left join #Temp2 on #Temp1.LoanUpdateID = #Temp2.LoanNumber
+
+
+
+JOIN ChatUsers CU ON #Temp1.Originator1ID = CU.UserId and #Temp1.ClientID= CU.ClientId and CU.Status=1
+
+
+
+left JOIN RecipientCatagory R on R.RecipientRole = #Temp2.RecipientRole
+
+
+
+)TABReult
+
+
+
+select *,R.ColorCode, case when ResultRole=1 then Messagetext else '' end as Message from #TempResult
+
+
+
+join RecipientCatagory R on R.RecipientType = #TempResult.RecepientInitials
+
+
+
+--where ResultRole=1
+
+
+
+drop table #Temp
+
+
+
+drop table #Temp1
+
+
+
+drop table #Temp2
+
+
+
+drop table #TempResult
+
+
+
+CREATE PROCEDURE GetChatMessagesForRecepient --  GetChatMessagesForRecepient '982'
+
+
+
+@LoanNumber varchar(50)
+
+
+
+AS
+
+
+
+BEGIN
+
+
+
+
+
+SELECT CH.*, EC.Originator1Name as UserName,
+
+case when IsSentByUser = 0 then RecipientName else  EC.Originator1Name end as 'SendBy'
+
+ from ChatHistory CH
+
+join EncompassLoanUpdates EC on  EC.LoanUpdateID = CH.LoanNumber
+
+ WHERE CH.LoanNumber = @LoanNumber 
+
+
+
+END
+
+
+
+
+
+CREATE PROCEDURE GetChatMessagesForRecepientByShortUrl --  GetChatMessagesForRecepientByShortUrl 'wertcdf'
+
+@shortUrl varchar(200)
+
+AS
+
+BEGIN
+
+
+
+SELECT CH.*, EC.Originator1Name as UserName,
+
+case when IsSentByUser = 0 then RecipientName else  EC.Originator1Name end as 'SendBy'
+
+ from ChatHistory CH
+
+	  join EncompassLoanUpdates EC on  EC.LoanUpdateID = CH.LoanNumber
+
+	  WHERE CH.ShortUrl = @shortUrl 
+
+
+
+
+
+
+
+END
+
+
+
+
+
+
+
+
+CREATE PROCEDURE GetDocumentsForUser --  GetChatMessagesForRecepient '982'
+
+
+
+@LoanNumber varchar(50)
+
+
+
+AS
+
+
+
+BEGIN
+
+
+
+
+
+SELECT *
+
+ from ChatHistory
+
+ WHERE LoanNumber = @LoanNumber 
+
+
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE PROCEDURE GetTotalNoOfMsg
+
+@RecipientPhoneNumber varchar(15),
+
+@UserPhoneNumber varchar(15),
+
+@LoanNumber varchar(10)
+
+AS
+
+
+
+select * from chathistory
+
+where RecipientPhoneNumber = @RecipientPhoneNumber
+
+	  AND UserPhoneNumber =@UserPhoneNumber
+
+	  AND LoanNumber= @LoanNumber
+
+
+CREATE PROCEDURE GetTotalNoOfMsgByMobile
+
+
+
+@RecipientPhoneNumber varchar(15),
+
+
+
+@UserPhoneNumber varchar(15),
+
+
+
+@LoanNumber varchar(10)
+
+
+
+AS
+
+
+
+
+
+
+
+select count(*) from chathistory
+
+
+
+where RecipientPhoneNumber = @RecipientPhoneNumber
+
+
+
+	  AND UserPhoneNumber =@UserPhoneNumber
+
+
+
+	  AND LoanNumber= @LoanNumber
+
+
+
+	  AND isnull(SentFromMobile,0)=1
+
+
+CREATE PROCEDURE GetUserDetailsFromReceivedMessage --GetUserDetailsFromReceivedMessage '+9715454739','+17342940754' 
+
+@ReceivedFrom nvarchar(50),
+
+@SendTo nvarchar(50) 
+
+AS
+
+BEGIN
+
+select * 
+
+from chathistory
+
+where RecipientPhoneNumber = @ReceivedFrom AND UserPhoneNumber = @SendTo
+
+END
+
+
+CREATE PROCEDURE GetUserStatus
+
+@UserPhoneNumber varchar(20)
+
+AS
+
+select Status from ChatUsers
+
+	   where PhoneNumber=@UserPhoneNumber
+
+
+CREATE PROCEDURE SaveDocument
+
+@DocName varchar(30),
+
+@DocPath varchar(500)=null,
+
+@DocSize varchar(50)=null,
+
+@DocType varchar(10)=null,
+
+@LoanNumber varchar(10)
+
+AS
+
+BEGIN
+
+update chathistory
+
+set DocName=@DocName,
+
+	DocPath=@DocPath,
+
+	DocSize=@DocSize,
+
+	DocType=@DocType
+
+Where loannumber = @LoanNumber
+
+END
+
+
+
+select * from chathistory
+
+
+CREATE PROCEDURE [dbo].[SaveMessage] --SaveMessage 'hh','8','00','yuy'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@RecipientName varchar(200) = null, 
+
+
+
+
+
+
+
+@UserId varchar(30) = null, 
+
+
+
+
+
+
+
+@IsSentByUser bit=false,
+
+
+
+
+
+
+
+@message varchar(200) = null, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@clientId varchar(30)=null, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@recepientPhoneNumber varchar(20)= null, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@userPhoneNumber varchar(20) = null,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@SentFromMobile bit,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@LoanNumber varchar(10) = null,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@RecipientRole int,
+
+
+
+@ShortUrl varchar(200)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AS 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEGIN 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO ChatHistory(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RecipientName,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+UserId,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IsSentByUser,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Message,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ClientId,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RecipientPhoneNumber,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+UserPhoneNumber,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SentFromMobile,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LoanNumber,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RecipientRole,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Timestamp,
+
+
+
+
+
+
+
+
+
+
+
+ShortUrl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VALUES(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@RecipientName,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@UserId,
+
+
+
+
+
+
+
+
+
+
+
+@IsSentByUser,
+
+
+
+@message,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@clientId,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@recepientPhoneNumber,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@userPhoneNumber,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@SentFromMobile,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@LoanNumber,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@RecipientRole,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getdate(),
+
+
+
+@ShortUrl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+END
+
+
+
+CREATE PROCEDURE SaveReceivedMessage --SaveReceivedMessage 'hh','8','00','yuy'
+
+
+
+@message varchar(200) = null, 
+
+
+
+@clientId varchar(30)=null, 
+
+
+
+@recepientPhoneNumber varchar(11)= null, 
+
+
+
+@userPhoneNumber varchar(11) = null
+
+
+
+
+
+
+
+AS 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BEGIN 
+
+
+
+INSERT INTO ChatHistory(
+
+
+
+Message,
+
+
+
+ClientId,
+
+
+
+RecipientPhoneNumber,
+
+
+
+UserPhoneNumber,
+
+
+
+SentFromMobile
+
+
+
+) 
+
+
+
+
+
+
+
+VALUES(
+
+
+
+@message,
+
+
+
+@clientId,
+
+
+
+@recepientPhoneNumber,
+
+
+
+@userPhoneNumber,
+
+
+
+1
+
+
+
+) 
+
+
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

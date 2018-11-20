@@ -1,0 +1,149 @@
+﻿@model IEnumerable<LiveChatSystem.Models.ChatHistory>
+@{
+    ViewBag.Title = "DocsUpload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="col-md-12 col-xs-12 col-sm-12" style="padding-left: 1px;padding-right: 1px;">
+    <div class="panel panel-primary " style="height:100%; overflow-y:scroll;">
+        <div class="panel-heading">
+            <div class="panel-heading">
+                @if (ViewBag.WebsiteHeaderPreference == "Text")
+
+                {<h4>@ViewBag.companyName    </h4> }
+            else
+            {
+                <h4> <img src="@ViewBag.LogoFileName" style="max-height:50px;max-width:100%;" /></h4>
+            }
+            </div>
+        </div>
+        <input type="hidden" class="clsShortUrl" value="@ViewBag.shortUrl" />
+        <input type="hidden" class="clsCompanyName" value="@ViewBag.companyName" />
+        <input type="hidden" class="clsWebsiteHeaderPref" value="@ViewBag.WebsiteHeaderPreference" />
+        <input type="hidden" class="clsLogoFileName" value="@ViewBag.LogoFileName" />
+        <div class="panel-body " style="height:100%;">
+
+            <div class="row">
+                <div class="col-md-12  " style="position:initial;">
+                   <button id="upldbtn" style="width:100%;text-align: left; background: white; border: 0;"> <h4  id="btnshow" style="padding:5px 5px 5px 3px; ">
+                        <i class="fa fa-arrow-circle-right fa-2x" aria-hidden="true"></i>
+                        Upload a document
+                    </h4></button>
+                   <div id="divhdn">
+                       <label style="text-align:left;">  <input type="file" id="FileUpload1" multiple style="display:none;"/></label>
+                       @*  <button class="btn bg-primary" style="margin-bottom:8px;margin-top:8px;" id="btnUpload">Click to add this to below List</button>*@
+                   </div>
+
+
+
+
+                </div>
+            </div>
+           @* <div class="row">
+                <div class="col-md-12 " style="position:initial;">
+                    <button class="btn btn-block btn-default btn-showVideo" onclick="showCamera()" style="text-align:left; border:none;">
+                        <i class="fa fa-arrow-circle-right fa-2x" aria-hidden="true"></i>
+                        Take a photo with your camera
+                    </button>
+                </div>
+            </div>
+            <div class="row" style="display:none;" id="camhdn">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div id="mbcContainer" style="width:100%;max-height:400px;border:1px solid #eee">
+                        <div id="dvPicture" style="display:none;height:100%" ;>
+                        </div>
+                    </div>
+                    @Html.Partial("_PictureUpload")
+
+                    @*<button class="btn btn-block btn-default btn-showVideo" onclick="showCamera()" style="text-align:left; border:none;">
+                            <i class="fa fa-arrow-circle-right fa-2x" aria-hidden="true"></i>
+                            Take a photo with your camera
+                        </button>
+                    <div class="row">
+                            <div id="mbcContainer" style="width:1000px;height:700px;border:1px solid #eee"></div>
+                            <div id="dvPicture" style="display:none">
+                                    @Html.Partial("_PictureUpload")
+                                </div>
+
+                        </div>
+                </div>
+            </div>*@
+
+            <div id="dialog" title="File Upload" style="display:none">
+                FileName <input type="text" id="txtFileName" value="" />
+                <input type="button" id="btnClose" value="OK" />
+            </div>
+            <div>
+                <h4 class="bg-primary" style="padding:5px 5px 5px 3px; margin-top: 10px;">
+                    Uploaded
+                </h4>
+                <table id="tblDocs" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item name</th>
+                            <th scope="col">File Type</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*<tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>*@
+                    </tbody>
+
+                    <tbody>
+                        @*  @foreach (var d in Model)
+                            {
+                                <tr style="overflow:scroll;height:100px;">
+
+                                    <td>@d.DocName</td>
+                                    <td>@d.DocType</td>
+                                    <td>@d.DocSize</td>
+                                    <td><i class="fa fa-times-circle fa-2x" aria-hidden="true"></i></td>
+                                </tr>
+                            } *@
+                    </tbody>
+                </table>
+
+                <button type="button" id="btnSubmit" class="btn bg-primary" style="align-content:flex-end;margin-top:10px;">Submit Docs</button>
+            </div>
+
+            <div class="panel-footer"></div>
+        </div>
+
+    </div>
+</div>
+
+@*<script src="~/MbcResources/dynamsoft.mbc.min.js"></script>*@
+<script>
+
+
+</script>
+@section Scripts
+{
+    <script src="@Url.Content("~/Custom/JS/mbc-2.1.1.min.js")"></script>
+    <script src="@Url.Content("~/Custom/JS/RecepientUploadDocs.js")"></script>
+
+    @*<script src="@Url.Content("~/Custom/JS/script.js")"></script>*@
+}
+
+
+
+
+
+
+@*@Styles.Render("~/MbcResources/dynamsoft.mbc.css")*@
+@Styles.Render("~/Custom/CSS/Recepient.css")
+@Styles.Render("~/Custom/CSS/cssReset.css")
+@*Styles.Render("~/Custom/CSS/mbc.css")*@
+@Styles.Render("~/Custom/CSS/style.css")
+
+
+
+

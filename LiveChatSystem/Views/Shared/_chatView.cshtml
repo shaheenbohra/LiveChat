@@ -1,0 +1,73 @@
+﻿@*<div class="panel-heading" style="float:right">
+        <span class="input-group-btn col-md-12">
+            <button id="btnBack" class="btn btn-info" type="button">Back</button>
+        </span>
+    </div>*@
+
+<div class="col-md-12 col-xs-12" style="padding:0 0 0 0 ;">
+
+
+    <div class="panel panel-info">
+        <input type="hidden" class="clsLoanNumber" value="@ViewBag.loanNumber" />
+        <input type="hidden" class="clsClientId" value="@ViewBag.clientId" />
+        <input type="hidden" class="clsRecipientName" value="@ViewBag.recepientName" />
+        <input type="hidden" class="clsRecipientPhoneNumber" value="@ViewBag.recepientPhoneNumber" />
+        <input type="hidden" class="clsRecepientRole" value="@ViewBag.RecepientRole" />
+        <input type="hidden" class="clsuserPhoneNumber" value="@ViewBag.userPhoneNumber" />
+        <input type="hidden" class="clsUserId" value="@ViewBag.UserId" />
+        <input type="hidden" class="clsResultRole" value="@ViewBag.ResultRole" />
+        <input type="hidden" class="clsLoanNo" value="@ViewBag.LoanNo" />
+        @{string myname = ViewBag.recepientName.Trim();
+            myname = myname.Replace(" ", "_");}
+
+        <div id="chat-area" class="panel-body msg_container_base2 clsValues @myname" style=" height:180px; display:flex; overflow-y:scroll; max-width:350px;">
+
+
+            <ul class="media-list" id="@myname">
+                @foreach (var d in ViewBag.lstConversations)
+                {
+                    <li class="media msg_container @(d.IsSentByUser?"base_sent":"base_receive")">
+
+
+                        <div class="media-body">
+
+
+                            <div class="messages @(d.IsSentByUser?"sent":"recieved")">
+                                <p>@d.Message </p>
+
+                                <small class="text-muted">@d.Timestamp</small>
+
+
+
+                            </div>
+                        </div>
+                    </li>
+
+                }
+
+            </ul>
+        </div>
+        <div class="panel-footer zero-pad">
+
+            <div class="col-md-12 input-group" style="padding-top:1%">
+                <small id="char" class="text-muted mychars">Characters remaining: </small>
+                <textarea id="txtMessage" type="text" rows="3" class="clstxtMessage form-control zero-pad clsmessage @myname" placeholder="Enter Message" maxlength="160" onkeypress="if(event.keyCode === 13){sendMessage(this,'@ViewBag.clientId','@ViewBag.recepientName','@ViewBag.recepientPhoneNumber','@ViewBag.loanNumber','@ViewBag.userPhoneNumber','@ViewBag.UserId','@ViewBag.RecepientRole','@ViewBag.LoanNo')}"></textarea>
+                <input type="hidden" class="clsConnectionid" value="" />
+                <span class="input-group-btn">
+                    <button id="btnSendMessage" class="btn custom-btn " type="button" onclick="sendMessage(this,'@ViewBag.clientId','@ViewBag.recepientName','@ViewBag.recepientPhoneNumber','@ViewBag.loanNumber','@ViewBag.userPhoneNumber','@ViewBag.UserId','@ViewBag.RecepientRole','@ViewBag.LoanNo')">
+                        <i class="fa fa-arrow-circle-up fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <input style="visibility:hidden" type="button" class="clsBtnSend" />
+                </span>
+            </div><br/>
+            <div class="col-md-12 input-group zero-pad">
+                @*<select style="width:100%" class="form-control">
+                        <option value="0">Select</option>
+                    </select>*@
+                @Html.DropDownList("ddlMsgTemplates", (SelectList)ViewBag.MessagesTemplates, new { @class = @myname + " form-control zero-pad", onchange = "showMessageTemplate('" + myname + "')" })
+            </div>
+        </div>
+    </div>
+</div>
+
+

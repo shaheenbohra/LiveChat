@@ -1,0 +1,95 @@
+﻿@model IEnumerable<LiveChatSystem.Models.ChatHistory>
+@{
+    /**/
+
+    ViewBag.Title = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row chat-window col-xs-12 col-md-12" id="chat_window_1" style="margin-left:0px; margin-right:0px;">
+    <div class="col-md-12 col-sm-12 col-xs-12" style="padding:0 0 0 0 ;">
+
+        <div class="panel panel-primary " style="margin-right:2px;">
+            <div class="panel-heading">
+                @if (ViewBag.WebsiteHeaderPreference == "Text")
+
+                {<h4>@ViewBag.companyName</h4> }
+            else
+            {
+                <h4> <img src="@ViewBag.LogoFileName" style="max-height:50px;max-width:100%;" /></h4>
+            }
+            </div>
+            <input type="hidden" class="clsLoanNumber" value="@ViewBag.loanNumber" />
+            <input type="hidden" class="clsClientId" value="@ViewBag.clientId" />
+            <input type="hidden" class="clsRecipientId" value="@ViewBag.RecipientId" />
+            <input type="hidden" class="clsRecipientName" value="@ViewBag.recepientName" />
+            <input type="hidden" class="clsRecipientPhoneNumber" value="@ViewBag.recepientPhoneNumber" />
+            <input type="hidden" class="clsRecepientRole" value="@ViewBag.RecepientRole" />
+            <input type="hidden" class="clsuserPhoneNumber" value="@ViewBag.userPhoneNumber" />
+            <input type="hidden" class="clsUserId" value="@ViewBag.UserId" />
+            <input type="hidden" class="clsResultRole" value="@ViewBag.ResultRole" />
+            <input type="hidden" class="clsShortUrl" value="@ViewBag.shortUrl" />
+            <input type="hidden" class="clsCompanyName" value="@ViewBag.companyName" />
+            <input type="hidden" class="clsWebsiteHeaderPref" value="@ViewBag.WebsiteHeaderPreference" />
+            <input type="hidden" class="clsLogoFileName" value="@ViewBag.LogoFileName" />
+            <input type="hidden" class="clsEmail" value="@ViewBag.Email" />
+            <input type="hidden" class="clsLoanNo" value="@ViewBag.LoanNo" />
+            @*<input type="hidden" class="clsLoanNo" value="@ViewBag.LoanNo" />*@
+            <div id="chats" class="panel-body msg_container_base">
+                @foreach (var d in Model)
+                {
+                    <div class="msg_container @(d.IsSentByUser?"base_recieve":"base_sent")">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-xs-12">
+                                <p>
+                                    <small class="text-muted @(d.IsSentByUser?"":"hidden")">Message From  @d.SendBy</small> <small class="text-muted  @(d.IsSentByUser?"":"hidden")">
+                                        &emsp;For Loan #: @ViewBag.LoanNo
+                                    </small>
+                                </p>
+                                <div class="messages @(d.IsSentByUser?"recieved":"sent")">
+                                    <p>
+                                        @d.Message
+                                    </p>
+                                    <small class="text-muted">@d.Timestamp</small>
+                                    <br />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="panel-footer">
+                <div class="row" style="padding-left:10px; padding-right:10px;">
+                    <div class="input-group">
+                        <input type="hidden" value="@ViewBag.ConnectionId" class="clsConnectionid" />
+                        <small id="chars" class="text-muted">Characters remaining: </small>
+                        <textarea id="btn-input" rows="5" class="clstxtMessage form-control input-sm chat_input" placeholder="Write your message here..." maxlength="160" style="max-width:100%;"></textarea>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default clsBtnSend" id="btn-chat"><i class="fa fa-arrow-circle-up fa-2x " aria-hidden="true"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:5px; padding-left:10px; padding-right:10px;">
+                    <button type="button" class="btn btn-primary btn-block" style="min-height:30px;">
+                        <span id="spUpload">Upload a Document or a Picture</span>
+                    </button>
+                </div>
+                <div class="row" style="margin-top:5px; padding-left:10px; padding-right:10px;">
+                    <button type="button" class="btn btn-primary btn-block" style="min-height:30px;" onclick="window.open('', '_self', ''); window.close();">
+                        <span id="closeWindow">Close Window</span> 
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+
+    <script src="@Url.Content("~/Custom/JS/RecepientChat.js")"></script>
+}
+
+@Styles.Render("~/Custom/CSS/Recepient.css")
